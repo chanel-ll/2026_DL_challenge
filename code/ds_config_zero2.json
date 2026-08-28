@@ -1,0 +1,24 @@
+{
+  "bf16": {
+    "enabled": true
+  },
+
+  "_comment": "bucket 크기를 5e8 -> 2e8 로 낮췄다. overlap_comm=true 면 DeepSpeed 가 버킷 크기의 여러 배를 통신 버퍼로 미리 잡는데, 24GB 카드에서는 그 1~2GB 가 아깝다. NCCL 실측 busbw 10.7GB/s 기준 2e8 버킷도 대역폭을 충분히 채운다.",
+
+  "zero_optimization": {
+    "stage": 2,
+    "overlap_comm": true,
+    "contiguous_gradients": true,
+    "reduce_bucket_size": 2e8,
+    "allgather_bucket_size": 2e8,
+    "round_robin_gradients": true
+  },
+
+  "gradient_accumulation_steps": "auto",
+  "gradient_clipping": "auto",
+  "train_batch_size": "auto",
+  "train_micro_batch_size_per_gpu": "auto",
+
+  "steps_per_print": 50,
+  "wall_clock_breakdown": false
+}
