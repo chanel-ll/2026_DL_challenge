@@ -6,12 +6,12 @@
 #SBATCH -p batch_ugrad
 #SBATCH -t 1-0
 #SBATCH -o logs/vgen-%A.out
-#SBATCH -w ariel-v12
 
 
 pwd; hostname; date
 source "$(conda info --base)/etc/profile.d/conda.sh" 2>/dev/null || source ~/.bashrc
-conda activate dcm || { echo "[ERROR] conda activate dcm 실패"; exit 1; }
+CONDA_ENV=${CONDA_ENV:-dcm}
+conda activate "$CONDA_ENV" || { echo "[ERROR] conda activate $CONDA_ENV 실패"; exit 1; }
 python -c "import vllm; print('[preflight] vllm', vllm.__version__)" || exit 1
 
 export TOKENIZERS_PARALLELISM=false

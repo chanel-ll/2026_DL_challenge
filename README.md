@@ -81,8 +81,21 @@ python -c "import vllm, transformers, peft, deepspeed; print(vllm.__version__, t
 # → 0.6.3.post1 4.48.3
 ```
 
-`run_*.sh` 는 내부에서 `conda activate dcm` 을 합니다. 환경 이름이 다르면 각 스크립트
-상단의 그 줄을 고치십시오.
+### 클러스터에 맞춰 바꿔야 하는 것
+
+`run_*.sh` 는 SLURM 배치 스크립트입니다. 두 가지는 사이트마다 다르므로 확인하십시오.
+
+| | |
+|---|---|
+| **파티션** | 각 `run_*.sh` 상단의 `#SBATCH -p batch_ugrad` 를 본인 파티션 이름으로 바꾸십시오 |
+| **conda 환경** | 기본값은 `dcm` 입니다. 다른 이름을 쓰면 `CONDA_ENV=<이름>` 을 앞에 붙이면 됩니다 |
+
+```bash
+CONDA_ENV=myenv sbatch --gres=gpu:4 run_gen_verifier.sh
+```
+
+노드는 고정하지 않았습니다. 특정 노드를 지정하려면 `sbatch -w <노드>` 를 붙이십시오
+(`final_gen.sh` / `final_score.sh` 는 두 번째 인자로 받습니다).
 
 ## 2. 데이터 연결
 
@@ -93,7 +106,11 @@ python -c "import vllm, transformers, peft, deepspeed; print(vllm.__version__, t
 cd code
 ln -sf ../dataset/*.csv .        # 심볼릭 링크가 안 되면: cp ../dataset/*.csv .
 chmod +x *.sh
+mkdir -p logs sft_data verif_eval submissions
 ```
+
+> `logs/` 는 **미리 만들어야 합니다.** SLURM 은 `#SBATCH -o logs/...` 파일을 스크립트가
+> 실행되기 전에 열기 때문에, 디렉토리가 없으면 첫 job 이 바로 실패합니다.
 
 | `dataset/` | 설명 |
 |---|---|

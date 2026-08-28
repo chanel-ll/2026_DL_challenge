@@ -17,7 +17,7 @@ OUTDIR=verif_eval/${TAG}_n${NN}
 if [ ! -d "$VERIF" ]; then
     echo "[ERROR] verifier 없음: $VERIF"
     echo "        서버에서 링크를 걸 것:"
-    echo "          ln -s /nas2/data/chan12/qwen_math/verifier_out ./verifier_out"
+    echo "          3-2 단계(run_train_verifier.sh)를 먼저 실행할 것"
     exit 1
 fi
 mkdir -p verif_eval logs

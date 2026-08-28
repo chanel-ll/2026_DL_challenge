@@ -6,12 +6,12 @@
 #SBATCH -p batch_ugrad
 #SBATCH -t 1-0
 #SBATCH -o logs/vtrain-%A.out
-#SBATCH -w ariel-v12
 
 
 pwd; hostname; date
 source "$(conda info --base)/etc/profile.d/conda.sh" 2>/dev/null || source ~/.bashrc
-conda activate dcm_rl || { echo "[ERROR] conda activate dcm_rl 실패"; exit 1; }
+CONDA_ENV=${CONDA_ENV:-dcm}
+conda activate "$CONDA_ENV" || { echo "[ERROR] conda activate $CONDA_ENV 실패"; exit 1; }
 
 export TOKENIZERS_PARALLELISM=false
 export TMPDIR="/tmp/${USER}-${SLURM_JOB_ID:-manual}"
@@ -46,7 +46,7 @@ date
 
 echo
 echo "=== 다음: 가중 다수결로 평가 ==="
-echo "  conda activate dcm"
+echo "  conda activate $CONDA_ENV"
 echo "  python infer_verifier.py --verifier $OUT/merged \\"
 echo "      --cands <후보파일> --out verif_eval"
 echo
