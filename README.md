@@ -1,4 +1,4 @@
-#Qwen2.5-3B-Instruct Math Reasoning
+# Qwen2.5-3B-Instruct Math Reasoning
 
 
 ## 핵심 방법
