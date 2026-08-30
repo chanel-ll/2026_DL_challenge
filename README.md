@@ -1,4 +1,4 @@
-# 아주 소중한 딥러닝 챌린지 2026 — Qwen2.5-3B-Instruct 수학 추론
+#Qwen2.5-3B-Instruct Math Reasoning
 
 
 ## 핵심 방법
